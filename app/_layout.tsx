@@ -5,6 +5,9 @@ import 'react-native-reanimated';
 import "../global.css";
 import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
+import { Provider } from 'react-redux';
+import store from "@/redux/store";
+import UserProvider from '@/components/providers/user';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -31,18 +34,22 @@ export default function RootLayout() {
     }
   }, [fontsLoaded, error]);
 
+
   if (!fontsLoaded && !error) {
     return null;
   }
 
   return (
-    <>
-      <StatusBar style='auto'/>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      </Stack>
-    </>
+    <Provider store={store}>
+      <UserProvider>
+        <StatusBar style='auto' />
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          {/* <Stack.Screen name="/search/[query]" options={{ headerShown: false }} /> */}
+        </Stack>
+      </UserProvider>
+    </Provider>
   );
 }
